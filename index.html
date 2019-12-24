@@ -43,8 +43,8 @@
     <script>
 
         function getWeather(location) {
-            fetch("https://crossorigin.me/http://api.weatherstack.com/current?access_key=4751a2e4468eec10a954c15640471a4d&query=" + location, {
-                mode:"no-cors"
+            fetch("http://api.weatherstack.com/current?access_key=4751a2e4468eec10a954c15640471a4d&query=" + location, {
+        
             })
                 .then(result => {
                     return result.json() //json method returns a promise so have to use then again
