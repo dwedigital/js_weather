@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Asynchronous JavaScript</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg mb-5">
+                <nav class="navbar navbar-dark bg-dark">
+                    <span class="navbar-brand mb-0 h1">Weather App</span>
+                  </nav>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md"></div>
+            <div class="col-md">
+        <h1>Weather Watch</h1>
+
+        <form  id="submit" onsubmit="return false">
+            <div>
+                <input class="form-control form-control-lg" type="text submit" placeholder="Enter Location" id="location">
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-primary btn-lg btn-block" type="submit" id="search">Submit</button>
+            </div>
+        </form>
+
+        <div><img src="" alt="" id="weather-icon" class='icon mt-2 mb-3'></div>
+        <p></p>
+    </div>
+    <div class="col-md"></div>
+    </div>
+    </div>
+    <script>
+
+        function getWeather(location) {
+            fetch("http://api.weatherstack.com/current?access_key=4751a2e4468eec10a954c15640471a4d&query=" + location, {
+
+            })
+                .then(result => {
+                    return result.json() //json method returns a promise so have to use then again
+
+                        .then(data => {
+                            console.log(data)
+                            // get elements from the API response
+                            const wind_speed = data.current.wind_speed
+                            const temp = data.current.temperature
+                            const location = data.location.name
+                            const icon = data.current.weather_icons[0]
+                            // select the document elements
+                            const el = document.querySelector('p')
+                            var node = document.createElement("LI")
+                            var textnode = document.createTextNode(`Weather in ${location} - Wind Speed: ${wind_speed} | Temp: ${temp}\u2103`)
+                            document.getElementById('weather-icon').src = icon
+                            node.appendChild(textnode)
+                            el.appendChild(node)
+                        })
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        };
+
+        function parseLocation(){
+            // and a click listener on the search button and get the entered value
+            const user_loc = document.getElementById("location").value
+            getWeather(user_loc)
+        }
+
+        document.getElementById("submit").addEventListener('submit',parseLocation,false)
+
+    </script>
+</body>
+
+</html>
